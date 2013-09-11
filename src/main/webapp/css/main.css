@@ -1,0 +1,21 @@
+#main{
+	margin : auto;
+	width : 800px;
+	height: 600px;
+	border: 1px solid black;
+}
+#left{
+	width : 180px;
+	height: 100%;
+	border: 1px solid black;
+	float : left;
+}
+#right{
+	width : 500px;
+	height: 100%;
+	float : left;
+	margin : 0 20px;
+}
+#res{
+	disabled:disabled;
+}
