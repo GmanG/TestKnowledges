@@ -3,10 +3,10 @@ $(document).ready(function() {
 	var counter = 0;
 	var resultTest = "";
 
-	$("#bt").click(function() {
+	$("#testButton").click(function() {
 		if (counter > 0){
 			resultTest += "<br>";
-			resultTest += ""+counter+") The answer to the question <b>"+$("h3").text()+"</b> was: ";
+			resultTest += ""+counter+")   The answer to the question <b>"+$("h3").text()+"</b> was: ";
 		}
 		$(this).val('next');
 		addResult();
@@ -14,14 +14,9 @@ $(document).ready(function() {
 		counter++;
 		if (counter == 6) {
 			$("#result").html("");
-			$("#res").removeAttr('disabled');
-			$("#bt").remove();	
+			$("#showResult").removeAttr('disabled');
+			$("#testButton").remove();	
 		}
-	});
-
-	$("#res").click(function() {
-		$("#result").html(resultTest);
-		$(this).remove();
 	});
 
 	function testStep() {
@@ -34,7 +29,7 @@ $(document).ready(function() {
 				$('#result').html(data);
 			},
 			error : function() {
-				alert('Try again');
+				$("#result").html("Can't connect to server");
 			}
 		});
 	}
@@ -42,11 +37,11 @@ $(document).ready(function() {
 	function addResult() {
 		$(".chkbox").each(function() {
 			if ($(this).is(':checked')) {
-				var dat = {id : $(this).val()};
+				var idValue = {id : $(this).val()};
 				$.ajax({
 					type: 'POST',
 					url : 'addResult.html',
-					data : dat,
+					data : idValue,
 					success : function(data) {
 						resultTest += data;
 					},
@@ -57,4 +52,9 @@ $(document).ready(function() {
 			}
 		});
 	}
+
+	$("#showResult").click(function() {
+		$("#result").html(resultTest);
+		$(this).remove();
+	});
 });

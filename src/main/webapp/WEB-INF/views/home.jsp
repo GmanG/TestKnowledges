@@ -16,9 +16,8 @@
 		<div id="left"></div>
 		<div id="right">
 			<div id="result"></div>
-			<input type="button" id="bt" onclick="" value="Start Test"> <input
-				type="button" id="res" onclick="" value="Show Result"
-				disabled="disabled">
+			<input type="button" id="testButton" onclick="" value="Start Test"> 
+			<input type="button" id="showResult" onclick="" value="Show Result" disabled="disabled">
 		</div>
 	</div>
 </body>
