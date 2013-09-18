@@ -1,8 +1,14 @@
 package ua.home.testknowledge.web;
 
+import java.io.IOException;
 import java.util.List;
-import java.util.TreeSet;
+import java.util.Map;
+import java.util.TreeMap;
 
+import org.codehaus.jackson.JsonGenerationException;
+import org.codehaus.jackson.map.JsonMappingException;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.map.ObjectWriter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,10 +16,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import ua.home.testknowledge.entity.Answer;
 import ua.home.testknowledge.entity.Question;
 import ua.home.testknowledge.service.AnswerService;
 import ua.home.testknowledge.service.QuestionService;
+
+
 
 @Controller
 public class QuestionController {
@@ -22,51 +29,53 @@ public class QuestionController {
 	private QuestionService questionService;
 	@Autowired
 	private AnswerService answerService;
-	private StringBuffer res = new StringBuffer();
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home() {
 		return "home";
 	}
-
+	
 	@RequestMapping(value = "/addResult", method = RequestMethod.POST)
 	public @ResponseBody
 	String getTestResult(@RequestParam int id) {
-		TreeSet<String> answerResults = new TreeSet<String>();
-		if (answerService.getAnswerById(id).getIsCorrect() == 1) {
-			answerResults.add(res.append(
-					" <font color='green'> correct: "
-							+ answerService.getAnswerById(id).getAnswer()
-							+ "</font>").toString());
-		} else {
-			answerResults.add(res.append(
-					" <font color='red'> incorrect: "
-							+ answerService.getAnswerById(id).getAnswer()
-							+ "</font>").toString());
+		Map<String, String> answers = new TreeMap<String, String>();
+		if (answerService.getAnswerById(id).getIsCorrect()) {
+			answers.put("green", answerService.getAnswerById(id).getAnswer());
+		}else{
+			answers.put("red", answerService.getAnswerById(id).getAnswer());
 		}
-		res.setLength(0);
-		return answerResults.toString().replaceAll("\\[|\\]", "");
+		ObjectWriter mapper = new ObjectMapper().writer().withDefaultPrettyPrinter();
+		String json = "";
+		try {
+			json = mapper.writeValueAsString(answers);
+		} catch (JsonGenerationException e) {
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return json;
 	}
-
+	
 	@RequestMapping(value = "/buildQuestion", method = RequestMethod.POST)
 	public @ResponseBody
 	String buildQuestion(@RequestParam int count) {
+		ObjectWriter mapper = new ObjectMapper().writer().withDefaultPrettyPrinter();
 		List<Question> listQuestions = questionService.getQuestions();
-		StringBuffer questionString = new StringBuffer();
-		if (count != 5) {
-			Question question = listQuestions.get(count);
-			int i = 1;
-			questionString.append("<h3>" + question.getQuestion() + "</h3>");
-			for (Answer answer : question.getAnswers()) {
-				questionString.append((i++)
-						+ ") <label>"
-						+ "<input type='checkbox' class='chkbox' name='chk' value='"
-						+ answer.getId() + "'>" + answer.getAnswer()
-						+ "</input></label><br>");
-			}
-		} else {
-			count = 0;
+		String json = "";
+		try {
+			if(count != 5)
+				json = mapper.writeValueAsString(listQuestions.get(count));
+		} catch (JsonGenerationException e) {
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
-		return questionString.toString();
+		return json;
+
+		
 	}
 }

@@ -9,18 +9,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.Transient;
-
-import org.codehaus.jackson.annotate.JsonBackReference;
-import org.codehaus.jackson.annotate.JsonIgnore;
-
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-
 
 @Entity
 public class Answer implements Serializable{
-	
+
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -28,7 +21,7 @@ public class Answer implements Serializable{
 
 	private String answer;
 
-	private byte isCorrect;
+	private boolean isCorrect;
 
 	@ManyToOne
 	@JoinColumn(name="QuestionID")
@@ -53,21 +46,21 @@ public class Answer implements Serializable{
 		this.answer = answer;
 	}
 
-	public byte getIsCorrect() {
+	public boolean getIsCorrect() {
 		return this.isCorrect;
 	}
 
-	public void setIsCorrect(byte isCorrect) {
+	public void setIsCorrect(boolean isCorrect) {
 		this.isCorrect = isCorrect;
 	}
-	
-	public Question getQuestions() {
+
+/*	public Question getQuestions() {
 		return question;
 	}
 
 	public void setQuestions(Question question) {
 		this.question = question;
-	}
+	}*/
 
 	@Override
 	public String toString() {
@@ -75,4 +68,4 @@ public class Answer implements Serializable{
 				+ isCorrect +  "}";
 	}
 
-}	
+}

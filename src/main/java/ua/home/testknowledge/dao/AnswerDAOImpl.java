@@ -1,7 +1,9 @@
 package ua.home.testknowledge.dao;
 
-import org.hibernate.Query;
+import org.hibernate.Criteria;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -14,7 +16,10 @@ public class AnswerDAOImpl implements AnswerDAO {
 
 	@Override
 	public Answer getAnswerById(int id)  {
-		return  (Answer)sessinFactory.getCurrentSession().createQuery("from Answer a where a.id=:id").setParameter("id", id).uniqueResult();
+		Session session = sessinFactory.getCurrentSession();
+		Criteria criteria = session.createCriteria(Answer.class);
+		criteria.add(Restrictions.eq("id", id));
+		return (Answer) criteria.uniqueResult(); 
 	}
 
 }

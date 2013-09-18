@@ -19,9 +19,14 @@ public class QuestionDAOImpl implements QuestionDAO {
 	@Autowired
 	private SessionFactory sessionFactory; 
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<Question> getQuestions() {
-		return sessionFactory.getCurrentSession().createQuery("select distinct q from Question q order by rand()").setMaxResults(5).list();
+		Session session = sessionFactory.getCurrentSession();
+		Criteria criteria = session.createCriteria(Question.class);
+		criteria.add(Restrictions.sqlRestriction("1=1 order by rand()"));
+		criteria.setMaxResults(5);
+		return criteria.list();
 	}
 
 	

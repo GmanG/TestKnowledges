@@ -8,9 +8,9 @@ $(document).ready(function() {
 			resultTest += "<br>";
 			resultTest += ""+counter+")   The answer to the question <b>"+$("h3").text()+"</b> was: ";
 		}
-		$(this).val('next');
+		$(this).val("next");
 		addResult();
-		testStep();
+		getQustion();
 		counter++;
 		if (counter == 6) {
 			$("#result").html("");
@@ -18,21 +18,6 @@ $(document).ready(function() {
 			$("#testButton").remove();	
 		}
 	});
-
-	function testStep() {
-		count = {count : counter};
-		$.ajax({
-			type: 'POST',
-			url : 'buildQuestion.html',
-			data : count,
-			success : function(data) {
-				$('#result').html(data);
-			},
-			error : function() {
-				$("#result").html("Can't connect to server");
-			}
-		});
-	}
 	
 	function addResult() {
 		$(".chkbox").each(function() {
@@ -43,7 +28,12 @@ $(document).ready(function() {
 					url : 'addResult.html',
 					data : idValue,
 					success : function(data) {
-						resultTest += data;
+						if(data){
+							var obj = $.parseJSON(data);
+							$.each(obj , function (key, value) {
+								resultTest +="<font color='"+key+"'> "+value+"</font> ";
+							});
+						}
 					},
 					error : function() {
 						alert('Try again');
@@ -57,4 +47,27 @@ $(document).ready(function() {
 		$("#result").html(resultTest);
 		$(this).remove();
 	});
+	
+	function getQustion(){
+		count = {count : counter};
+		var type = " ";
+		$.ajax({
+			type: 'POST',
+			url : 'buildQuestion',
+			data: count,
+			success : function(data) {
+				if(data){
+					var obj = $.parseJSON(data);
+					type  += "<h3>"+obj.question+"</h3>";
+					$.each(obj.answers, function (key, value) {
+						type +="<label> <input type='checkbox' class='chkbox' name='chk' value='"+value.id+"'>"+value.answer+"</input></label><br>";
+						$("#result").html(type);
+					});
+				}
+			},
+			error : function() {
+				alert('Cant connect to the server');
+			}
+		});
+	}
 });
