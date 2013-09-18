@@ -5,7 +5,7 @@
 <title>Home</title>
 <script
 	src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<script type="text/javascript" src="<c:url value="/js/js.js" />"></script>
+<script type="text/javascript" src="<c:url value="/js/testKnowledge.js" />"></script>
 <link rel='stylesheet' href="<c:url value="/css/main.css" />"
 	type='text/css'>
 
