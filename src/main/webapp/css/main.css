@@ -16,3 +16,9 @@
 	float : left;
 	margin : 0 20px;
 }
+#tab-content-holder div {
+    display: none;
+}
+#tab-content-holder div.show {
+    display: block;
+}

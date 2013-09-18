@@ -19,17 +19,25 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 
 @Entity
+//@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id")
 public class Answer implements Serializable{
-	
+
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
+//	@GeneratedValue
 	private int id;
 
 	private String answer;
 
-	private byte isCorrect;
+	private boolean isCorrect;
 
+//	@ManyToOne(optional = false)
+//	@JoinColumn(name="QuestionID")
+//	@JsonBackReference("question-answer")
+//	@JsonBackReference
+	@JsonIgnore
+//	@Transient
 	@ManyToOne
 	@JoinColumn(name="QuestionID")
 	private Question question;
@@ -53,21 +61,27 @@ public class Answer implements Serializable{
 		this.answer = answer;
 	}
 
-	public byte getIsCorrect() {
+	public boolean getIsCorrect() {
 		return this.isCorrect;
 	}
 
-	public void setIsCorrect(byte isCorrect) {
+	public void setIsCorrect(boolean isCorrect) {
 		this.isCorrect = isCorrect;
 	}
-	
-	public Question getQuestions() {
+
+/*	public Question getQuestions() {
 		return question;
 	}
 
 	public void setQuestions(Question question) {
 		this.question = question;
-	}
+	}*/
+//
+//	@Override
+//	public String toString() {
+//		return "Answer [id=" + id + ", answer=" + answer + ", isCorrect="
+//				+ isCorrect + ", question=" + question + "]";
+//	}
 
 	@Override
 	public String toString() {
@@ -75,4 +89,4 @@ public class Answer implements Serializable{
 				+ isCorrect +  "}";
 	}
 
-}	
+}

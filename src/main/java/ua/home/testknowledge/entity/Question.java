@@ -20,17 +20,23 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
 @Table(name = "Question")
+@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id")
 public class Question implements Serializable{
-	
+
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
+//	@GeneratedValue
 	private int id;
 
 	private String question;
 
-	@JsonManagedReference
-	@OneToMany(mappedBy="question")
+
+	@JsonManagedReference("question-answers")
+//	@JsonManagedReference
+//	@OneToMany(mappedBy="question")
+	@OneToMany(mappedBy="question" , cascade = CascadeType.PERSIST)
+//	@Transient
 	private List<Answer> answers;
 
 	public Question() {
@@ -51,7 +57,7 @@ public class Question implements Serializable{
 	public void setQuestion(String question) {
 		this.question = question;
 	}
-	
+
 
 	public List<Answer> getAnswers() {
 		return answers;
@@ -60,11 +66,11 @@ public class Question implements Serializable{
 	public void setAnswers(List<Answer> answers) {
 		this.answers = answers;
 	}
-
+//
 	@Override
 	public String toString() {
 		return "Question [id=" + id + ", question=" + question + ", answers="
 				+ answers + "]";
 	}
-	
+
 }

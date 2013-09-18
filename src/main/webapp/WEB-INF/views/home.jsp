@@ -15,10 +15,12 @@
 	<div id="main">
 		<div id="left"></div>
 		<div id="right">
+		<!-- <div id="tab-content-holder"></div> -->
 			<div id="result"></div>
 			<input type="button" id="testButton" onclick="" value="Start Test"> 
 			<input type="button" id="showResult" onclick="" value="Show Result" disabled="disabled">
 		</div>
 	</div>
+	<input type="button" id="json" onclick="" value="json">
 </body>
 </html>
